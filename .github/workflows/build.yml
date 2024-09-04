@@ -1,8 +1,14 @@
 name: Do The Docker Dew - Nextcloud
 on:
-  push:
+  #push:
+  #  branches: [ main ]  # Adjust this if you use a different default branch
   workflow_dispatch:
-  
+    inputs:
+      nextcloud_version:
+        description: 'Nextcloud version to build (e.g., 29.0.06-fpm-alpine)'
+        required: true
+        default: '29.0.06-fpm-alpine'
+
 jobs:
   build-and-push:
     runs-on: arc-runners
@@ -10,20 +16,32 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-
+    
     - name: Login to internal private docker repo
       uses: docker/login-action@v3
       with:
         registry: ${{ vars.IMAGE_REGISTRY_HOST }}
         username: ${{ secrets.IMAGE_REGISTRY_USERNAME }}
         password: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
-        
+    
+    - name: Determine Nextcloud version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "NEXTCLOUD_VERSION=${{ github.event.inputs.nextcloud_version }}" >> $GITHUB_OUTPUT
+        else
+          echo "NEXTCLOUD_VERSION=${{ vars.NEXTCLOUD_VERSION }}" >> $GITHUB_OUTPUT
+        fi
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         context: .
         file: ./Dockerfile
         push: true
+        build-args: |
+          NEXTCLOUD_VERSION=${{ steps.version.outputs.NEXTCLOUD_VERSION }}
         tags: |
           ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:latest
-          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:${{ github.sha }}  
+          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:${{ github.sha }}
+          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:${{ steps.version.outputs.NEXTCLOUD_VERSION }}
