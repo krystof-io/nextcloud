@@ -1,4 +1,5 @@
-FROM nextcloud:29.0.06-fpm-alpine
+ARG NEXTCLOUD_VERSION=29.0.06-fpm-alpine
+FROM nextcloud:${NEXTCLOUD_VERSION}
 
 RUN set -ex; \
     \
