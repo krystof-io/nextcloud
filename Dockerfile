@@ -9,7 +9,7 @@ RUN set -ex; \
         procps \
         samba-client \
         supervisor \
-#       libreoffice \
+        libreoffice \
     ;
 
 RUN set -ex; \
