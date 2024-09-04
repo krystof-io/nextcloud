@@ -11,6 +11,7 @@ on:
 
 jobs:
   build-and-push:
+    name: Build Nextcloud ${{ github.event.inputs.nextcloud_version || vars.NEXTCLOUD_VERSION }}  
     runs-on: arc-runners
     
     steps:
