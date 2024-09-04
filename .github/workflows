@@ -1,0 +1,29 @@
+name: Do The Docker Dew - Nextcloud
+on:
+  push:
+  workflow_dispatch:
+  
+jobs:
+  build-and-push:
+    runs-on: arc-runners
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+
+    - name: Login to internal private docker repo
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ vars.IMAGE_REGISTRY_HOST }}
+        username: ${{ secrets.IMAGE_REGISTRY_USERNAME }}
+        password: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
+        
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: |
+          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:latest
+          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:${{ github.sha }}  
