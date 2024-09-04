@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
     inputs:
       nextcloud_version:
-        description: 'Nextcloud version to build (e.g., 29.0.06-fpm-alpine)'
+        description: 'Nextcloud version to build (e.g., 29.0.6-fpm-alpine)'
         required: true
-        default: '29.0.06-fpm-alpine'
+        default: '29.0.6-fpm-alpine'
 
 jobs:
   build-and-push:
