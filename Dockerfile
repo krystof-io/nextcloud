@@ -10,9 +10,16 @@ RUN set -ex; \
         samba-client \
         #supervisor \
         libreoffice \
+        python3 \
+        py3-pip \
+        gcc \
+        g++ \
+        make \
+        linux-headers \
+        wget        
     ;
 
-RUN apt-get install libcudnn8=8.6.0.163-1+cuda11.8    
+ 
 #        python3 \
 #        py3-pip \
 #        gcc \
@@ -41,6 +48,7 @@ RUN apt-get install libcudnn8=8.6.0.163-1+cuda11.8
 
 ## Install PyTorch with CUDA support
 #RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+RUN python3 -m pip install tensorflow[and-cuda]
 
 RUN set -ex; \
     \
