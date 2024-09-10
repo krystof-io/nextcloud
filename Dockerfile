@@ -49,8 +49,8 @@ RUN set -ex; \
 ## Install PyTorch with CUDA support
 #RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 # Install TensorFlow
-RUN pip3 install --upgrade pip && \
-    pip3 install --no-cache-dir tensorflow[and-cuda] --break-system-packages
+RUN pip3 install --upgrade pip --break-system-packages
+RUN pip3 install --no-cache-dir tensorflow[and-cuda] --break-system-packages
 
 RUN set -ex; \
     \
