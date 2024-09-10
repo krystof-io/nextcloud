@@ -19,10 +19,22 @@ RUN set -ex; \
         wget        
 
 
-RUN wget https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_550.54.14_linux.run \
-    && chmod +x cuda_12.4.0_550.54.14_linux.run \
-    && ./cuda_12.4.0_550.54.14_linux.run --toolkit --silent \
-    && rm cuda_12.4.0_550.54.14_linux.run
+    - name: Download CUDA Toolkit
+      run: |
+        wget https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_550.54.14_linux.run
+
+    - name: Download cuDNN
+      run: |
+        wget https://developer.download.nvidia.com/compute/cudnn/9.4.0/local_installers/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz
+        
+
+# Copy CUDA installer
+COPY cuda_12.4.0_550.54.14_linux.run /tmp/
+
+# Install CUDA Toolkit 12.4
+RUN chmod +x /tmp/cuda_12.4.0_550.54.14_linux.run \
+    && /tmp/cuda_12.4.0_550.54.14_linux.run --toolkit --silent \
+    && rm /tmp/cuda_12.4.0_550.54.14_linux.run
 
 ENV PATH=/usr/local/cuda/bin:${PATH}
 ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
@@ -30,11 +42,18 @@ ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
 #COPY cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz /tmp/
 #RUN tar -xf /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz -C /usr/local \
     #&& rm /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz
-RUN wget https://developer.download.nvidia.com/compute/cudnn/9.4.0/local_installers/cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb \
-    && dpkg -i cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb \
+# Install cuDNN
+COPY cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb /tmp/
+RUN dpkg -i /tmp/cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb \
     && cp /var/cudnn-local-repo-ubuntu2404-9.4.0/cudnn-*-keyring.gpg /usr/share/keyrings/ \
     && apt-get update \
-    && apt-get -y install cudnn-cuda-12
+    && apt-get install -y cudnn-cuda-12 \
+    && rm /tmp/cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb
+
+# Install cuDNN (assuming the file is copied into the build context)
+COPY cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz /tmp/
+RUN tar -xf /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz -C /usr/local \
+    && rm /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz    
 
 # Install PyTorch with CUDA support
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
