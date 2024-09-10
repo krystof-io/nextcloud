@@ -23,12 +23,12 @@ RUN set -ex; \
 COPY cuda_12.4.0_550.54.14_linux.run /tmp/
 
 # Install CUDA Toolkit 12.4
-RUN chmod +x /tmp/cuda_12.4.0_550.54.14_linux.run \
-    && /tmp/cuda_12.4.0_550.54.14_linux.run --toolkit --silent \
-    && rm /tmp/cuda_12.4.0_550.54.14_linux.run
+#RUN chmod +x /tmp/cuda_12.4.0_550.54.14_linux.run \
+#    && /tmp/cuda_12.4.0_550.54.14_linux.run --toolkit --silent \
+#    && rm /tmp/cuda_12.4.0_550.54.14_linux.run
 
-ENV PATH=/usr/local/cuda/bin:${PATH}
-ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
+#ENV PATH=/usr/local/cuda/bin:${PATH}
+#ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
 
 #COPY cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz /tmp/
 #RUN tar -xf /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz -C /usr/local \
