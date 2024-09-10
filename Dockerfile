@@ -50,7 +50,7 @@ RUN set -ex; \
 #RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 # Install TensorFlow
 RUN pip3 install --upgrade pip --break-system-packages
-RUN pip3 install --no-cache-dir tensorflow-gpu --break-system-packages
+RUN pip3 install --no-cache-dir tensorflowand-cuda --break-system-packages
 
 RUN set -ex; \
     \
