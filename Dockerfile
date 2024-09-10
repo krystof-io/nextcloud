@@ -19,15 +19,6 @@ RUN set -ex; \
         wget        
 
 
-    - name: Download CUDA Toolkit
-      run: |
-        wget https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_550.54.14_linux.run
-
-    - name: Download cuDNN
-      run: |
-        wget https://developer.download.nvidia.com/compute/cudnn/9.4.0/local_installers/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz
-        
-
 # Copy CUDA installer
 COPY cuda_12.4.0_550.54.14_linux.run /tmp/
 
