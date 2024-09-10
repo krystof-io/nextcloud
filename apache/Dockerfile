@@ -11,6 +11,11 @@ RUN set -ex; \
         procps \
         smbclient \
         libreoffice \
+        python3 \
+        python3-pip \
+        python3-dev \
+        wget \
+        gcc \        
     ; \
     rm -rf /var/lib/apt/lists/*
 
@@ -47,3 +52,7 @@ RUN set -ex; \
     \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     rm -rf /var/lib/apt/lists/*
+
+# Install TensorFlow
+RUN pip3 install --upgrade pip --break-system-packages   
+RUN pip3 install --no-cache-dir tensorflow[and-cuda] --break-system-packages   
