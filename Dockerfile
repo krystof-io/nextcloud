@@ -10,17 +10,18 @@ RUN set -ex; \
         samba-client \
         #supervisor \
         libreoffice \
-        python3 \
-        py3-pip \
-        gcc \
-        g++ \
-        make \
-        linux-headers \
-        wget        
+        libcudnn8=8.6.0.163-1+cuda11.8
+#        python3 \
+#        py3-pip \
+#        gcc \
+#        g++ \
+#        make \
+#        linux-headers \
+#        wget        
 
 
 # Copy CUDA installer
-COPY cuda_12.4.0_550.54.14_linux.run /tmp/
+#COPY cuda_12.4.0_550.54.14_linux.run /tmp/
 
 # Install CUDA Toolkit 12.4
 #RUN chmod +x /tmp/cuda_12.4.0_550.54.14_linux.run \
@@ -30,17 +31,14 @@ COPY cuda_12.4.0_550.54.14_linux.run /tmp/
 #ENV PATH=/usr/local/cuda/bin:${PATH}
 #ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
 
-#COPY cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz /tmp/
-#RUN tar -xf /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz -C /usr/local \
-    #&& rm /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz
 # Install cuDNN
-COPY cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz /tmp/
-RUN tar -xf /tmp/cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz -C /usr/local \
-    && rm /tmp/cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz
+#COPY cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz /tmp/
+#RUN tar -xf /tmp/cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz -C /usr/local \
+#    && rm /tmp/cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz
 
 
-# Install PyTorch with CUDA support
-RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+## Install PyTorch with CUDA support
+#RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
 RUN set -ex; \
     \
@@ -70,8 +68,8 @@ RUN set -ex; \
     apk add --virtual .nextcloud-phpext-rundeps $runDeps; \
     apk del .build-deps
 
-RUN nvcc --version && \
-    python3 -c "import torch; print(torch.cuda.is_available())"
+#RUN nvcc --version && \
+#    python3 -c "import torch; print(torch.cuda.is_available())"
     
 #RUN mkdir -p \
 #    /var/log/supervisord \
