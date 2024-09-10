@@ -10,7 +10,7 @@ RUN set -ex; \
         samba-client \
         #supervisor \
         libreoffice \
-        libcudnn8=8.6.0.163-1+cuda11.8
+    ;
 #        python3 \
 #        py3-pip \
 #        gcc \
