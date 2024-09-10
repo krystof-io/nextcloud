@@ -54,4 +54,17 @@ jobs:
           echo "NEXTCLOUD_VERSION=${{ vars.NEXTCLOUD_VERSION }}" >> $GITHUB_OUTPUT
         fi
 
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v6.7.0
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        build-args: |
+          NEXTCLOUD_VERSION=${{ steps.version.outputs.NEXTCLOUD_VERSION }}
+        tags: |
+          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:latest
+          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:${{ github.sha }}
+          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:${{ steps.version.outputs.NEXTCLOUD_VERSION }}        
+
 
