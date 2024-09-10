@@ -17,7 +17,7 @@ RUN set -ex; \
         make \
         linux-headers \
         wget        
-    ;
+
 
 RUN wget https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_550.54.14_linux.run \
     && chmod +x cuda_12.4.0_550.54.14_linux.run \
