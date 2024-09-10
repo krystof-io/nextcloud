@@ -41,11 +41,6 @@ RUN dpkg -i /tmp/cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb \
     && apt-get install -y cudnn-cuda-12 \
     && rm /tmp/cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb
 
-# Install cuDNN (assuming the file is copied into the build context)
-COPY cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz /tmp/
-RUN tar -xf /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz -C /usr/local \
-    && rm /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz    
-
 # Install PyTorch with CUDA support
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
