@@ -1,4 +1,4 @@
-name: Do The Docker Dew - Nextcloud - FPM Alpine
+name: Nextcloud - FPM Alpine
 on:
   #push:
   #  branches: [ main ]  # Adjust this if you use a different default branch
@@ -58,7 +58,7 @@ jobs:
       uses: docker/build-push-action@v6.7.0
       with:
         context: .
-        file: ./Dockerfile
+        file: ./fpm-alpine/Dockerfile
         push: true
         build-args: |
           NEXTCLOUD_VERSION=${{ steps.version.outputs.NEXTCLOUD_VERSION }}
