@@ -24,7 +24,7 @@ jobs:
       with:
         path: |
           ./cuda_12.4.0_550.54.14_linux.run
-          ./cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb
+          ./cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz
         key: ${{ runner.os }}-cuda-12.4.0-cudnn-9.4.0
 
     - name: Login to internal private docker repo
@@ -43,7 +43,7 @@ jobs:
     - name: Download cuDNN
       if: steps.cache-cuda-cudnn.outputs.cache-hit != 'true'
       run: |
-        wget https://developer.download.nvidia.com/compute/cudnn/9.4.0/local_installers/cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb
+        wget https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/linux-x86_64/cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz
         
     - name: Determine Nextcloud version
       id: version
