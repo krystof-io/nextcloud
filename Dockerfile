@@ -16,7 +16,7 @@ RUN set -ex; \
         g++ \
         make \
         linux-headers \
-        wget        
+        wget \        
     ;
 
  
