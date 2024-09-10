@@ -1,0 +1,69 @@
+name: Do The Docker Dew - Nextcloud - FPM Apache
+on:
+  #push:
+  #  branches: [ main ]  # Adjust this if you use a different default branch
+  workflow_dispatch:
+    inputs:
+      nextcloud_version:
+        description: 'Nextcloud version to build (e.g., 29.0.6-apache)'
+        required: true
+        default: '29.0.6-apache'
+
+jobs:
+  build-and-push:
+    name: Build Nextcloud ${{ github.event.inputs.nextcloud_version || vars.NEXTCLOUD_VERSION }}  
+    runs-on: arc-runners
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+
+#    - name: Cache CUDA and cuDNN
+#      uses: actions/cache@v2
+#      id: cache-cuda-cudnn
+#      with:
+#        path: |
+#          ./cuda_12.4.0_550.54.14_linux.run
+#          ./cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz
+#        key: ${{ runner.os }}-cuda-12.4.0-cudnn-9.4.0
+
+    - name: Login to internal private docker repo
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ vars.IMAGE_REGISTRY_HOST }}
+        username: ${{ secrets.IMAGE_REGISTRY_USERNAME }}
+        password: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
+
+
+ #   - name: Download CUDA Toolkit
+ #     if: steps.cache-cuda-cudnn.outputs.cache-hit != 'true'
+ #     run: |
+ #       wget https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_550.54.14_linux.run
+
+ #   - name: Download cuDNN
+ #     if: steps.cache-cuda-cudnn.outputs.cache-hit != 'true'
+ #     run: |
+ #       wget https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/linux-x86_64/cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz
+        
+    - name: Determine Nextcloud version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "NEXTCLOUD_VERSION=${{ github.event.inputs.nextcloud_version }}" >> $GITHUB_OUTPUT
+        else
+          echo "NEXTCLOUD_VERSION=${{ vars.NEXTCLOUD_VERSION }}" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v6.7.0
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        build-args: |
+          NEXTCLOUD_VERSION=${{ steps.version.outputs.NEXTCLOUD_VERSION }}
+        tags: |
+          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:latest
+          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:${{ github.sha }}
+          ${{ vars.IMAGE_REGISTRY_HOST }}/${{ github.repository_owner }}/nextcloud-plus:${{ steps.version.outputs.NEXTCLOUD_VERSION }}        
+
