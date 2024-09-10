@@ -34,12 +34,10 @@ ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
 #RUN tar -xf /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz -C /usr/local \
     #&& rm /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz
 # Install cuDNN
-COPY cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb /tmp/
-RUN dpkg -i /tmp/cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb \
-    && cp /var/cudnn-local-repo-ubuntu2404-9.4.0/cudnn-*-keyring.gpg /usr/share/keyrings/ \
-    && apt-get update \
-    && apt-get install -y cudnn-cuda-12 \
-    && rm /tmp/cudnn-local-repo-ubuntu2404-9.4.0_1.0-1_amd64.deb
+COPY cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz /tmp/
+RUN tar -xf /tmp/cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz -C /usr/local \
+    && rm /tmp/cudnn-linux-x86_64-9.4.0.58_cuda12-archive.tar.xz
+
 
 # Install PyTorch with CUDA support
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
