@@ -1,4 +1,4 @@
-name: Nextcloud - FPM Apache
+name: Nextcloud - Apache
 on:
   #push:
   #  branches: [ main ]  # Adjust this if you use a different default branch
