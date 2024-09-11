@@ -20,10 +20,10 @@ RUN set -ex; \
         wget \
 #        software-properties-common \
 #        gnupg \        
-#        python3 \
-#        python3-pip \
-#        python3-dev \
-#        gcc \           
+        python3 \
+        python3-pip \
+        python3-dev \
+        gcc \           
     ; \
     rm -rf /var/lib/apt/lists/*
 
