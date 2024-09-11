@@ -1,14 +1,6 @@
 ARG NEXTCLOUD_VERSION=29.0.6-apache
 FROM nextcloud:${NEXTCLOUD_VERSION}
 
-RUN apt-get update; apt-get install wget
-
-# Download and install CUDA
-RUN wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb 
-RUN dpkg -i cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb
-RUN cp /var/cuda-repo-debian11-11-8-local/cuda-*-keyring.gpg /usr/share/keyrings/
-RUN rm cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb 
-RUN rm -rf /var/lib/apt/lists/*
 
 #RUN wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb && \
 #    dpkg -i cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb && \
@@ -34,13 +26,18 @@ RUN set -ex; \
     rm -rf /var/lib/apt/lists/*
 
 
+# Download and install CUDA
+RUN wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb \
+    && dpkg -i cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb \
+    && cp /var/cuda-repo-debian11-11-8-local/cuda-*-keyring.gpg /usr/share/keyrings/ \
+    && rm cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb \
+    && rm -rf /var/lib/apt/lists/*
+
 
 RUN wget https://developer.download.nvidia.com/compute/cudnn/9.4.0/local_installers/cudnn-local-repo-debian12-9.4.0_1.0-1_amd64.deb \
     && dpkg -i cudnn-local-repo-debian12-9.4.0_1.0-1_amd64.deb \
-    && cp /var/cuda-repo-debian12-9-4-local/cudnn-*-keyring.gpg /usr/share/keyrings/ \
-    && add-apt-repository contrib \
-    && apt-get update \
-    && apt-get -y install cudnn-cuda-11    
+    && cp /var/cuda-repo-debian12-9-4-local/cudnn-*-keyring.gpg /usr/share/keyrings/ 
+  
 
 RUN set -ex; \
     \
