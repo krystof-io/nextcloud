@@ -18,12 +18,12 @@ RUN set -ex; \
         smbclient \
         libreoffice \    
         wget \
-        software-properties-common \
-        gnupg \        
-        python3 \
-        python3-pip \
-        python3-dev \
-        gcc \           
+#        software-properties-common \
+#        gnupg \        
+#        python3 \
+#        python3-pip \
+#        python3-dev \
+#        gcc \           
     ; \
     rm -rf /var/lib/apt/lists/*
 
@@ -79,15 +79,4 @@ RUN set -ex; \
 
 # Install TensorFlow
 RUN pip3 install --upgrade pip --break-system-packages   
-RUN pip3 install --no-cache-dir tensorflow[and-cuda] --break-system-packages   
-#                    libcudnn8-dev_8.6.0.163-1+cuda11.8_amd64.deb
-
-RUN wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb \
-    && dpkg -i cuda-keyring_1.1-1_all.deb \
-    && apt-get update
-
-RUN apt-get -y install cudnn8-cuda-11
-#libcudnn8=8.6.0.163-1+cuda11.8
-# Set CUDA environment variables
-#ENV PATH=/usr/local/cuda/bin:${PATH}
-#ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+RUN pip3 install --no-cache-dir tensorflow --break-system-packages   
