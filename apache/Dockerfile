@@ -1,6 +1,8 @@
 ARG NEXTCLOUD_VERSION=29.0.6-apache
 FROM nextcloud:${NEXTCLOUD_VERSION}
 
+RUN apt-get install wget
+
 # Download and install CUDA
 RUN wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb && \
     dpkg -i cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb && \
