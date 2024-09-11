@@ -86,7 +86,8 @@ RUN wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_6
     && dpkg -i cuda-keyring_1.1-1_all.deb \
     && apt-get update
 
-RUN apt-get install libcudnn8=8.6.0.163-1+cuda11.8
+RUN apt-get -y install cudnn9-cuda-11
+#libcudnn8=8.6.0.163-1+cuda11.8
 # Set CUDA environment variables
 #ENV PATH=/usr/local/cuda/bin:${PATH}
 #ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH
