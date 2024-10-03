@@ -1,12 +1,6 @@
-ARG NEXTCLOUD_VERSION=29.0.6-apache
+ARG NEXTCLOUD_VERSION=30.0.0-apache
 FROM nextcloud:${NEXTCLOUD_VERSION}
 
-
-#RUN wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb && \
-#    dpkg -i cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb && \
-#    cp /var/cuda-repo-debian11-11-8-local/cuda-*-keyring.gpg /usr/share/keyrings/ && \
-#    rm cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb
-    
 RUN set -ex; \
     \
     apt-get update; \
@@ -16,32 +10,9 @@ RUN set -ex; \
         libmagickcore-6.q16-6-extra \
         procps \
         smbclient \
-        libreoffice \    
-        wget \
-#        software-properties-common \
-#        gnupg \        
-        python3 \
-        python3-pip \
-        python3-dev \
-        gcc \           
+        libreoffice \
     ; \
     rm -rf /var/lib/apt/lists/*
-
-
-# Download and install CUDA
-#RUN wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb \
-#  && dpkg -i cuda-repo-debian11-11-8-local_11.8.0-520.61.05-1_amd64.deb \
-#  && cp /var/cuda-repo-debian11-11-8-local/cuda-*-keyring.gpg /usr/share/keyrings/ \
-#  && add-apt-repository contrib \
-#  && apt-get update \
-#  && apt-get -y install cuda 
-
-
-
-#RUN wget https://developer.download.nvidia.com/compute/cudnn/9.4.0/local_installers/cudnn-local-repo-debian12-9.4.0_1.0-1_amd64.deb \
-#    && dpkg -i cudnn-local-repo-debian12-9.4.0_1.0-1_amd64.deb \
-#    && cp /var/cuda-repo-debian12-9-4-local/cudnn-*-keyring.gpg /usr/share/keyrings/ 
-  
 
 RUN set -ex; \
     \
@@ -76,7 +47,3 @@ RUN set -ex; \
     \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     rm -rf /var/lib/apt/lists/*
-
-# Install TensorFlow
-RUN pip3 install --upgrade pip --break-system-packages   
-RUN pip3 install --no-cache-dir tensorflow --break-system-packages   
