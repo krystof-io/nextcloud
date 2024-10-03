@@ -7,7 +7,7 @@ on:
       nextcloud_version:
         description: 'Nextcloud version to build (e.g., 29.0.6-apache)'
         required: true
-        default: '29.0.6-apache'
+        default: '30.0.0-apache'
 
 jobs:
   build-and-push:
